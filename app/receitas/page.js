@@ -1,0 +1,5 @@
+import Link from 'next/link';import Image from 'next/image';import {sql} from '../../lib/db';
+export const dynamic='force-dynamic';export const metadata={title:'Receitas'};
+export default async function R(){let r=[],erro='';try{r=await sql`select slug,nome,descricao,tempo_preparo,categoria,imagem from receitas where ativo order by created_at desc`;}catch(e){erro=String(e.message||e).slice(0,200);}
+return(<><h1>Receitas</h1>{erro&&<p role="alert" className="empty">Não foi possível carregar as receitas: {erro}</p>}<div className="grid" style={{marginTop:20}}>{r.map(x=><Link key={x.slug} href={`/receitas/${x.slug}`} className="card"><div className="ph">{x.imagem?<Image src={x.imagem} alt={x.nome} fill sizes="300px"/>:<span>{x.nome[0]}</span>}</div>
+<div className="cb"><h3>{x.nome}</h3><p className="mut">{x.descricao}</p><div className="meta mut">{x.categoria}{x.tempo_preparo&&` · ${x.tempo_preparo}`}</div></div></Link>)}</div>{!r.length&&!erro&&<p className="empty">Nenhuma receita publicada ainda.</p>}</>);}
