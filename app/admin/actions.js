@@ -11,4 +11,7 @@ await sql`insert into produtos(slug,nome,descricao,preco,loja,link_afiliado,imag
 revalidatePath('/','layout');redirect('/admin');}
 export async function alternar(fd){await guard();await sql`update produtos set ativo=not ativo where id=${fd.get('id')}`;revalidatePath('/','layout');}
 export async function excluir(fd){await guard();await sql`delete from produtos where id=${fd.get('id')}`;revalidatePath('/','layout');}
-export async function instalar(){await guard();for(const s of SCHEMA.split(/;\s*\n/).filter(x=>x.trim()))await sql(s);revalidatePath('/','layout');redirect('/admin');}
+export async function instalar(){await guard();let erro='';
+try{if(!process.env.DATABASE_URL)throw new Error('O banco (Neon) ainda não está conectado ao projeto. Falta DATABASE_URL.');
+for(const s of SCHEMA.split(/;\s*\n/).filter(x=>x.trim())){const t=[s];t.raw=[s];await sql(t);}}catch(e){erro=String(e.message||e).slice(0,300);}
+if(erro)redirect('/admin/instalar?erro='+encodeURIComponent(erro));revalidatePath('/','layout');redirect('/admin');}
