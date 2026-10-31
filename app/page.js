@@ -1,5 +1,5 @@
 import Link from 'next/link';import {sql} from '../lib/db';import ProductCard from '../components/ProductCard';
-export const revalidate=300;
+export const dynamic='force-dynamic';
 export default async function Home(){const [amb,prod,rec]=await Promise.all([sql`select slug,nome from ambientes where ativo order by ordem`,
 sql`select * from produtos where ativo and destaque order by created_at desc limit 8`,sql`select slug,nome,descricao,imagem from receitas where ativo and destaque order by created_at desc limit 3`]);
 return(<><section className="hero"><h1>O que uso em casa, e o que levo à mesa.</h1><p>Os produtos dos meus vlogs, cômodo por cômodo, e as receitas da minha cozinha.</p></section>
