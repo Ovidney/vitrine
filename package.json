@@ -1,0 +1,2 @@
+{"name":"vitrine","private":true,"scripts":{"dev":"next dev","build":"next build","start":"next start","db:setup":"node db/setup.mjs"},
+"dependencies":{"next":"14.2.15","react":"18.3.1","react-dom":"18.3.1","@neondatabase/serverless":"0.10.4","@vercel/blob":"0.27.0"}}
